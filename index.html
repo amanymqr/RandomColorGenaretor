@@ -5,30 +5,43 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>color</title>
+    <title>alarm</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>    RANDOM  COLORS</h1>
-    <main>
-        <!-- the color box -->
-        <div class="colorBox">
-            <p>Click Me!</p>
+    <div class="alarm">
+        <img src="files/2.jpg" alt="">
+        <h1>00:00:00 PM</h1>
+
+        <div class="content">
+            <div class="col">
+                <select>
+                    <option value="hour" selected hidden>Hour</option>
+
+                </select>
+            </div>
+
+            <div class="col">
+                <select>
+                    <option value="Minute" selected hidden>Minute</option>
+
+                </select>
+            </div>
+
+            <div class="col">
+                <select>
+                    <option value="AM/PM" selected hidden>AM/PM</option>
+                    
+                </select>
+            </div>
         </div>
 
-        <!-- the control box -->
-        <div class="control">
-            <button class="random-btn-color">choose random color</button>
+        <button>Set Alarm</button>
+    </div>
 
-            <p>or</p>
 
-            <p>type hexadecimal color</p>
-
-            <input id="text-hexa" type="text" maxlength="9" placeholder="add hexadecimal color" >
-        </div>
-    </main>
     <script src="script.js"></script>
 </body>
 

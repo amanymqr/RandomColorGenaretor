@@ -1,42 +1,78 @@
 
+const currentTime = document.querySelector("h1"),
+    content = document.querySelector(".content"),
+    selectMenu = document.querySelectorAll("select"),
+    setAlarmBtn = document.querySelector("button");
+//  console.log(selectMenue);
 
-let
-    myBtn = document.querySelector(".random-btn-color"),
-    hexaInput = document.querySelector("#text-hexa"),
-    paintBox = document.querySelector(".colorBox");
+let alarmTime, isAlarmSet,
+    ringtone = new Audio("./files/ringtone.mp3");
 
-const randomColor = () => {
-    let r = Math.random() * 255 // Generate a random value for red (0-255)
-    let g = Math.random() * 255
-    let b = Math.random() * 255
-    // The Math.random() function generates a random number between 0 (inclusive) and 1 (exclusive). By multiplying the result by 255, we can map the random value to the range of [0, 255], which is the range of possible values for each of the red, green, and blue components of a color in the RGB color model.
+for (let i = 12; i > 0; i--) {
+    i = i < 10 ? `0${i}` : i;
+    let option = `<option value="${i}">${i}</option>`;
+    selectMenu[0].firstElementChild.insertAdjacentHTML("afterend", option);
+    // is inserting the generated <option> element into the first <select> element on the page, as its second child element.
 
-
-    let hexaColor = `#${parseInt(r).toString(16)}${parseInt(g).toString(16)}${parseInt(b).toString(16)}`
-
-    // parseInt(r).toString(16) converts the integer to a string in base-16 (hexadecimal) format.
-
-    // if r is 120, g is 200, and b is 50, the resulting hexaColor variable would be #78C832,
-
-    // By passing the argument 16 to the toString() method, we are telling it to convert the number to a string in base-16 (hexadecimal) format
-    hexaInput.value = hexaColor;
-    paintBox.style.backgroundColor = hexaColor;
-
+    // selectMenue[0] is accessing the first element in the selectMenue array-like object, which contains all the <select> elements on the page that match the selector 'select'
 }
 
-// the first event for random color
-myBtn.addEventListener('click', randomColor)
-
-// the second event for input color 
-hexaInput.addEventListener('keyup', () => {
-    paintBox.style.backgroundColor = hexaInput.value;
-})
-
-var colorint;
-paintBox.addEventListener('mouseover', () => {
-    colorint = setInterval(randomColor, 500)
+for (let i = 59; i >= 0; i--) {
+    i = i < 10 ? `0${i}` : i;
+    let option = `<option value="${i}">${i}</option>`;
+    selectMenu[1].firstElementChild.insertAdjacentHTML("afterend", option);
 }
-)
-paintBox.addEventListener('mouseout', () => {
-    clearInterval(colorint)
-})
+
+for (let i = 2; i > 0; i--) {
+    let ampm = i == 1 ? "AM" : "PM";
+    let option = `<option value="${ampm}">${ampm}</option>`;
+    selectMenu[2].firstElementChild.insertAdjacentHTML("afterend", option);
+}
+
+setInterval(() => {
+    let date = new Date(),
+        h = date.getHours(),
+        m = date.getMinutes(),
+        s = date.getSeconds(),
+        ampm = "AM";
+    if (h >= 12) {
+        h = h - 12;
+        ampm = "PM";
+    }
+    h = h == 0 ? h = 12 : h;
+    h = h < 10 ? "0" + h : h;
+    m = m < 10 ? "0" + m : m;
+    s = s < 10 ? "0" + s : s;
+    currentTime.innerText = `${h}:${m}:${s} ${ampm}`;
+
+    if (alarmTime === `${h}:${m} ${ampm}`) {
+        ringtone.play();
+        ringtone.loop = true;
+    }
+});
+
+function setAlarm() {
+    if (isAlarmSet) {
+        alarmTime = "";
+        ringtone.pause();
+        ringtone.loop = false; // Add this line
+        content.classList.remove("disable");
+        setAlarmBtn.innerText = "Set Alarm";
+        return isAlarmSet = false;
+    }
+
+
+    let time = `${selectMenu[0].value}:${selectMenu[1].value} ${selectMenu[2].value}`;
+    if (time.includes("Hour") || time.includes("Minute") || time.includes("AM/PM")) {
+        return alert("Please, select a valid time to set Alarm!");
+    }
+    alarmTime = time;
+    isAlarmSet = true;
+    content.classList.add("disable");
+    setAlarmBtn.innerText = "Clear Alarm";
+}
+
+setAlarmBtn.addEventListener("click", setAlarm);
+
+
+
